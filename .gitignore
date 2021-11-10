@@ -1,0 +1,6 @@
+/swagger/
+/swagger.zip
+*.tmp
+*.exe
+*.exe~
+/.idea/
