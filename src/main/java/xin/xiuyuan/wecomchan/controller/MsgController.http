@@ -1,0 +1,54 @@
+### 发送图文消息
+POST http://localhost:8080/msg/news
+Content-Type: application/json
+
+[
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": "https://pic4.zhimg.com/v2-fdee464603f47addb289bbdb114f667b_b.jpg"
+  },
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": "https://pic4.zhimg.com/v2-fdee464603f47addb289bbdb114f667b_b.jpg"
+  },
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": "https://pic4.zhimg.com/v2-fdee464603f47addb289bbdb114f667b_b.jpg"
+  },
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": "https://pic4.zhimg.com/v2-fdee464603f47addb289bbdb114f667b_b.jpg"
+  },
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": "https://pic4.zhimg.com/v2-fdee464603f47addb289bbdb114f667b_b.jpg"
+  },
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": "https://pic4.zhimg.com/v2-fdee464603f47addb289bbdb114f667b_b.jpg"
+  },
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": "https://pic4.zhimg.com/v2-fdee464603f47addb289bbdb114f667b_b.jpg"
+  },
+  {
+    "title": "美情报官员透露：间谍越来越难以渗透中国，导致美国政府没想到香港等问题这么快解决，事实真是如此吗？",
+    "description": "据彭博社 11 月 10 日报道，美国审查过机密文件的情报官员透露",
+    "url": "https://www.zhihu.com/question/498020400",
+    "picurl": ""
+  }
+]

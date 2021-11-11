@@ -13,6 +13,8 @@ import xin.xiuyuan.wecomchan.constant.UrlConstant;
 import xin.xiuyuan.wecomchan.model.*;
 import xin.xiuyuan.wecomchan.service.IMsgService;
 
+import java.util.List;
+
 /**
  * @author xinbj
  * @date 2021-11-10 16:49
@@ -99,6 +101,18 @@ public class MsgServiceImpl implements IMsgService {
         markdown.setContent(content);
         markdownMsg.setMarkdown(markdown);
         String body = JSONUtil.toJsonStr(markdownMsg);
+        String responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
+        return JSONUtil.toBean(responseBody, MsgResult.class);
+    }
+
+    @Override
+    public MsgResult sendNews(List<Article> articles) {
+        NewsMsg newsMsg = new NewsMsg();
+        newsMsg.setAgentid(wecomAid);
+        News news = new News();
+        newsMsg.setNews(news);
+        news.setArticles(articles);
+        String body = JSONUtil.toJsonStr(newsMsg);
         String responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
         return JSONUtil.toBean(responseBody, MsgResult.class);
     }

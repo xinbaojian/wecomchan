@@ -1,6 +1,9 @@
 package xin.xiuyuan.wecomchan.service;
 
+import xin.xiuyuan.wecomchan.model.Article;
 import xin.xiuyuan.wecomchan.model.MsgResult;
+
+import java.util.List;
 
 /**
  * @author xinbj
@@ -45,8 +48,17 @@ public interface IMsgService {
 
     /**
      * 发送markdown 消息
+     *
      * @param markdown markdown 内容
      * @return 发送结果
      */
     MsgResult sendMarkdown(String markdown);
+
+    /**
+     * 发送图文消息
+     *
+     * @param articles 图文列表
+     * @return 发送结果
+     */
+    MsgResult sendNews(List<Article> articles);
 }
