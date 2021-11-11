@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import xin.xiuyuan.wecomchan.constant.GlobalConstant;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author xinbj
  * @date 2021-11-10 16:49
  */
+@Slf4j
 @Service
 public class MsgServiceImpl implements IMsgService {
 
@@ -69,8 +71,7 @@ public class MsgServiceImpl implements IMsgService {
         textMsg.setAgentid(wecomAid);
         textMsg.setText(new Text().setContent(content));
         String body = JSONUtil.toJsonStr(textMsg);
-        String responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
-        return JSONUtil.toBean(responseBody, MsgResult.class);
+        return post(body);
     }
 
     @Override
@@ -82,8 +83,7 @@ public class MsgServiceImpl implements IMsgService {
         }
         textCartMsg.setTextcard(textCard);
         String body = JSONUtil.toJsonStr(textCartMsg);
-        String responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
-        return JSONUtil.toBean(responseBody, MsgResult.class);
+        return post(body);
     }
 
 
@@ -95,8 +95,7 @@ public class MsgServiceImpl implements IMsgService {
         markdown.setContent(content);
         markdownMsg.setMarkdown(markdown);
         String body = JSONUtil.toJsonStr(markdownMsg);
-        String responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
-        return JSONUtil.toBean(responseBody, MsgResult.class);
+        return post(body);
     }
 
     @Override
@@ -107,7 +106,23 @@ public class MsgServiceImpl implements IMsgService {
         newsMsg.setNews(news);
         news.setArticles(articles);
         String body = JSONUtil.toJsonStr(newsMsg);
+        return post(body);
+    }
+
+    private MsgResult post(String body) {
         String responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
-        return JSONUtil.toBean(responseBody, MsgResult.class);
+        MsgResult msgResult = JSONUtil.toBean(responseBody, MsgResult.class);
+        //access_token 失效错误码
+        int invalidAccessTokenCode = 42001;
+        if (msgResult.getErrcode() == invalidAccessTokenCode) {
+            //access_token 已失效 清除access_token 尝试重试一次
+            TIME_CACHE.clear();
+            log.error("errorCode: {}, errorMsg: {}", msgResult.getErrcode(), msgResult.getErrmsg());
+            responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
+            msgResult = JSONUtil.toBean(responseBody, MsgResult.class);
+        } else if (msgResult.getErrcode() != 0) {
+            log.error("errorCode: {}, errorMsg: {}", msgResult.getErrcode(), msgResult.getErrmsg());
+        }
+        return msgResult;
     }
 }
