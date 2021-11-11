@@ -36,4 +36,9 @@ public class MsgController {
                                          @RequestParam(value = "btnTxt", required = false, defaultValue = "详情") String btnTxt) {
         return ResponseEntity.ok(msgService.sendTextCard(title, description, url, btnTxt));
     }
+
+    @GetMapping("/markdown")
+    public HttpEntity<?> pushMarkdown(@RequestParam(value = "markdown")String markdown){
+        return ResponseEntity.ok(msgService.sendMarkdown(markdown));
+    }
 }

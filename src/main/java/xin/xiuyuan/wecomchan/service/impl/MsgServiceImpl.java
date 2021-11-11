@@ -90,4 +90,16 @@ public class MsgServiceImpl implements IMsgService {
     public MsgResult sendTextCard(String title, String description, String url) {
         return sendTextCard(title, description, url, null);
     }
+
+    @Override
+    public MsgResult sendMarkdown(String content) {
+        MarkdownMsg markdownMsg = new MarkdownMsg();
+        markdownMsg.setAgentid(wecomAid);
+        Markdown markdown = new Markdown();
+        markdown.setContent(content);
+        markdownMsg.setMarkdown(markdown);
+        String body = JSONUtil.toJsonStr(markdownMsg);
+        String responseBody = HttpUtil.post(StrUtil.format(UrlConstant.SEND_MSG_URL, getAccessToken()), body);
+        return JSONUtil.toBean(responseBody, MsgResult.class);
+    }
 }

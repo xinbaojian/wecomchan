@@ -42,4 +42,11 @@ public interface IMsgService {
      * @return 发送结果
      */
     MsgResult sendTextCard(String title, String description, String url);
+
+    /**
+     * 发送markdown 消息
+     * @param markdown markdown 内容
+     * @return 发送结果
+     */
+    MsgResult sendMarkdown(String markdown);
 }
