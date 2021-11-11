@@ -16,6 +16,10 @@
     <properties>
         <java.version>1.8</java.version>
         <hutool.version>5.7.16</hutool.version>
+        <!-- docker 打包插件 -->
+        <docker.plugin.version>0.38.0</docker.plugin.version>
+        <!-- docker 暴漏端口,如果是多个请重写插件 ports -->
+        <docker.expose>8080:8080</docker.expose>
     </properties>
     <dependencies>
         <dependency>
@@ -69,6 +73,45 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- 引入此插件,必须在子模块pom插件中引入 spring-boot-maven-plugin -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.plugin.version}</version>
+                <configuration>
+                    <dockerHost>tcp://192.168.25.201:2375</dockerHost>
+                    <!-- 显示完整控制台打包输出 -->
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>192.168.25.201:5000/xiuyuan/${project.artifactId}</name>
+                            <build>
+                                <!-- 基础镜像 -->
+                                <from>192.168.25.201:5000/java:8u281</from>
+                                <!-- 镜像标签 -->
+                                <tags>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <!-- 复制jar包 -->
+                                <assembly>
+                                    <targetDir>/app</targetDir>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <!-- 镜像入口点 -->
+                                <entryPoint>
+                                    <shell>java -Xms64m -Xmx128m -Dfile.encoding=utf-8 -Djava.security.edg=file:/dev/./urandom -jar /app/${project.artifactId}.jar</shell>
+                                </entryPoint>
+                            </build>
+                            <run>
+                                <!-- 映射端口:容器端口 -->
+                                <ports>
+                                    <port>${docker.expose}</port>
+                                </ports>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
             </plugin>
         </plugins>
     </build>
