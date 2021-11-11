@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+spring:
+  application:
+    name: ${APPLICATION_NAME:wecomchan}
+
+wecom:
+  corpid: ${CORP_ID:CORP_ID}
+  corpsecret: ${WECOM_SECRET:WECOM_SECRET}
+  aid: ${WECOM_AID:WECOM_AID}
