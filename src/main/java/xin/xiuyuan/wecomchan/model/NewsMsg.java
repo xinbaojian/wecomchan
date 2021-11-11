@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 public class NewsMsg extends Msg {
 
     /**
-     * 消息类型，此时固定为：text
+     * 消息类型，此时固定为：news
      */
     private String msgtype = "news";
 

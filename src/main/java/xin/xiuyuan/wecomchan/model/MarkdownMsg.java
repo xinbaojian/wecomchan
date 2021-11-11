@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 public class MarkdownMsg extends Msg {
 
     /**
-     * 消息类型，此时固定为：text
+     * 消息类型，此时固定为：markdown
      */
     private String msgtype = "markdown";
 

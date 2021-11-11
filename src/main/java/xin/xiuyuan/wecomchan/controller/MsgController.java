@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xin.xiuyuan.wecomchan.model.Article;
+import xin.xiuyuan.wecomchan.model.TextCard;
 import xin.xiuyuan.wecomchan.service.IMsgService;
 
 import java.util.List;
@@ -32,17 +33,11 @@ public class MsgController {
     /**
      * 发送文本卡片消息
      *
-     * @param title       消息标题
-     * @param description 消息描述
-     * @param url         url
-     * @param btnTxt      按钮
+     * @param textCard 卡片消息对象
      */
-    @GetMapping("/text/card")
-    public HttpEntity<?> pushTextCardMsg(@RequestParam(value = "title") String title,
-                                         @RequestParam(value = "description") String description,
-                                         @RequestParam(value = "url") String url,
-                                         @RequestParam(value = "btnTxt", required = false, defaultValue = "详情") String btnTxt) {
-        return ResponseEntity.ok(msgService.sendTextCard(title, description, url, btnTxt));
+    @PostMapping("/text/card")
+    public HttpEntity<?> pushTextCardMsg(@RequestBody TextCard textCard) {
+        return ResponseEntity.ok(msgService.sendTextCard(textCard));
     }
 
     /**

@@ -74,13 +74,11 @@ public class MsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public MsgResult sendTextCard(String title, String description, String url, String btnTxt) {
+    public MsgResult sendTextCard(TextCard textCard) {
         TextCartMsg textCartMsg = new TextCartMsg();
         textCartMsg.setAgentid(wecomAid);
-        TextCard textCard = new TextCard();
-        textCard.setTitle(title).setDescription(description).setUrl(url);
-        if (StrUtil.isNotBlank(btnTxt)) {
-            textCard.setBtntxt(btnTxt);
+        if (StrUtil.isBlank(textCard.getBtntxt())) {
+            textCard.setBtntxt("详情");
         }
         textCartMsg.setTextcard(textCard);
         String body = JSONUtil.toJsonStr(textCartMsg);
@@ -88,10 +86,6 @@ public class MsgServiceImpl implements IMsgService {
         return JSONUtil.toBean(responseBody, MsgResult.class);
     }
 
-    @Override
-    public MsgResult sendTextCard(String title, String description, String url) {
-        return sendTextCard(title, description, url, null);
-    }
 
     @Override
     public MsgResult sendMarkdown(String content) {
