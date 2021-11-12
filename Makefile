@@ -7,6 +7,10 @@ run: clean
 build: clean
 	docker build -t xiuyuan/wecomchan:gov1 .
 
+save:
+	docker save -o wecomchan.tar xiuyuan/wecomchan:gov1
+	tar cvjpf wecomchan.tar.bz2 wecomchan.tar
+
 start:
 	docker-compose --compatibility up -d
 

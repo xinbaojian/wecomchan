@@ -179,7 +179,6 @@ func SendTextMessage(message string) (models.MsgResult, error) {
 		},
 	}
 	str, _ := json.Marshal(textMsg)
-	fmt.Println(string(str))
 	return PostMessage(string(str))
 }
 

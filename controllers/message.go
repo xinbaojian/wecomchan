@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/astaxie/beego"
+	"net/url"
 	"wecomchan/models"
 	"wecomchan/service"
 )
@@ -19,7 +19,13 @@ type MessageController struct {
 //@router /:message [get]
 func (o *MessageController) Get() {
 	message := o.Ctx.Input.Param(":message")
-	fmt.Println(service.SendTextMessage(message))
+	decodedValue, err := url.QueryUnescape(message)
+	result, err := service.SendTextMessage(decodedValue)
+	if err != nil {
+		o.Data["json"] = err.Error()
+	} else {
+		o.Data["json"] = result
+	}
 	o.ServeJSON()
 }
 
