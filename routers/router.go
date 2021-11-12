@@ -1,4 +1,4 @@
-// @APIVersion 1.0.0
+// Package routers @APIVersion 1.0.0
 // @Title beego Test API
 // @Description beego has a very cool tools to autogenerate documents for your API
 // @Contact astaxie@gmail.com
@@ -18,6 +18,11 @@ func init() {
 		beego.NSNamespace("/object",
 			beego.NSInclude(
 				&controllers.ObjectController{},
+			),
+		),
+		beego.NSNamespace("/message",
+			beego.NSInclude(
+				&controllers.MessageController{},
 			),
 		),
 	)

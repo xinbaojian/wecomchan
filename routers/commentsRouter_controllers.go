@@ -7,6 +7,33 @@ import (
 
 func init() {
 
+    beego.GlobalControllerRouter["wecomchan/controllers:MessageController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:MessageController"],
+        beego.ControllerComments{
+            Method: "Get",
+            Router: `/:message`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["wecomchan/controllers:MessageController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:MessageController"],
+        beego.ControllerComments{
+            Method: "PostNews",
+            Router: `/news`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["wecomchan/controllers:MessageController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:MessageController"],
+        beego.ControllerComments{
+            Method: "PostTextCard",
+            Router: `/textcard`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["wecomchan/controllers:ObjectController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:ObjectController"],
         beego.ControllerComments{
             Method: "Post",
@@ -48,69 +75,6 @@ func init() {
             Method: "Delete",
             Router: `/:objectId`,
             AllowHTTPMethods: []string{"delete"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["wecomchan/controllers:UserController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "Post",
-            Router: `/`,
-            AllowHTTPMethods: []string{"post"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["wecomchan/controllers:UserController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "GetAll",
-            Router: `/`,
-            AllowHTTPMethods: []string{"get"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["wecomchan/controllers:UserController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "Get",
-            Router: `/:uid`,
-            AllowHTTPMethods: []string{"get"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["wecomchan/controllers:UserController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "Put",
-            Router: `/:uid`,
-            AllowHTTPMethods: []string{"put"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["wecomchan/controllers:UserController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "Delete",
-            Router: `/:uid`,
-            AllowHTTPMethods: []string{"delete"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["wecomchan/controllers:UserController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "Login",
-            Router: `/login`,
-            AllowHTTPMethods: []string{"get"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["wecomchan/controllers:UserController"] = append(beego.GlobalControllerRouter["wecomchan/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "Logout",
-            Router: `/logout`,
-            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
