@@ -10,6 +10,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 	"wecomchan/models"
 )
@@ -69,6 +70,9 @@ func GetEnvDefault(key, defVal string) string {
 
 // GetAccessToken 获取AccessToken
 func GetAccessToken() string {
+	var mutex sync.Mutex
+	mutex.Lock()
+	defer mutex.Unlock()
 	key, err := bm.Get(context.TODO(), AccessTokenKey)
 	if err == nil {
 		logs.Info("从缓存中获取Key")
