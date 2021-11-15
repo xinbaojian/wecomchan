@@ -18,3 +18,9 @@ down:
 	docker-compose --compatibility down
 	docker image prune -f
 	docker volume prune -f
+
+restart: down start logs
+	echo "restart successfully.."
+
+logs:
+	docker-compose --compatibility logs -f --tail 2000

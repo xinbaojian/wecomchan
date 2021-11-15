@@ -34,6 +34,8 @@ var AccessTokenKey = "ACCESS_TOKEN_KEY"
 
 var bm cache.Cache
 
+var mutex sync.Mutex
+
 func init() {
 	//错误对象
 	var err error
@@ -70,7 +72,6 @@ func GetEnvDefault(key, defVal string) string {
 
 // GetAccessToken 获取AccessToken
 func GetAccessToken() string {
-	var mutex sync.Mutex
 	mutex.Lock()
 	defer mutex.Unlock()
 	key, err := bm.Get(context.TODO(), AccessTokenKey)
