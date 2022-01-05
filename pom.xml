@@ -15,7 +15,7 @@
     <description>wecomchan</description>
     <properties>
         <java.version>1.8</java.version>
-        <hutool.version>5.7.16</hutool.version>
+        <hutool.version>5.7.18</hutool.version>
         <!-- docker 打包插件 -->
         <docker.plugin.version>0.38.0</docker.plugin.version>
         <!-- docker 暴漏端口,如果是多个请重写插件 ports -->
@@ -80,15 +80,15 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker.plugin.version}</version>
                 <configuration>
-                    <dockerHost>tcp://192.168.25.201:2375</dockerHost>
+                    <dockerHost>tcp://localhost:2375</dockerHost>
                     <!-- 显示完整控制台打包输出 -->
                     <verbose>true</verbose>
                     <images>
                         <image>
-                            <name>192.168.25.201:5000/xiuyuan/${project.artifactId}</name>
+                            <name>registry.cn-hangzhou.aliyuncs.com/xinbj/${project.artifactId}</name>
                             <build>
                                 <!-- 基础镜像 -->
-                                <from>192.168.25.201:5000/java:8u281</from>
+                                <from>registry.cn-hangzhou.aliyuncs.com/xinbj/java:8u281</from>
                                 <!-- 镜像标签 -->
                                 <tags>
                                     <tag>${project.version}</tag>
@@ -119,13 +119,13 @@
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
-            <url>http://192.168.25.201:8081/repository/maven-releases/</url>
+            <url>http://nexus.qi-tech.com.cn/repository/maven-releases/</url>
             <uniqueVersion>false</uniqueVersion>
             <layout>default</layout>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
-            <url>http://192.168.25.201:8081/repository/maven-snapshots/</url>
+            <url>http://nexus.qi-tech.com.cn/repository/maven-snapshots/</url>
             <uniqueVersion>false</uniqueVersion>
             <layout>default</layout>
         </snapshotRepository>
@@ -136,7 +136,7 @@
         <repository>
             <id>nexus-maven</id>
             <name>nexus-maven Repository</name>
-            <url>http://192.168.25.201:8081/repository/maven-public/</url>
+            <url>http://nexus.qi-tech.com.cn/repository/maven-public/</url>
         </repository>
     </repositories>
 
