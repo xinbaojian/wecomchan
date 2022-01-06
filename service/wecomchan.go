@@ -19,9 +19,6 @@ var GetAccessTokenUrl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&
 
 var sendMsgUrl = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s"
 
-// AccessTokenKey ACCESS_TOKEN 缓存key
-var AccessTokenKey = "ACCESS_TOKEN_KEY"
-
 var bm cache.Cache
 
 var mutex sync.Mutex
@@ -69,7 +66,7 @@ func GetAccessToken(aid string) (string, error) {
 	json.Unmarshal(responseBody.Body(), &msgResult)
 	if msgResult.ErrCode == 0 {
 		logs.Info("把key 放入缓存中..")
-		bm.Put(context.TODO(), AccessTokenKey, msgResult.AccessToken, 7200*time.Second)
+		bm.Put(context.TODO(), aid, msgResult.AccessToken, 7200*time.Second)
 	}
 	return msgResult.AccessToken, err
 }
