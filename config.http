@@ -1,0 +1,11 @@
+POST http://localhost:8080/v1/config/
+Content-Type: application/json
+
+{
+  "CorpId": "",
+  "WecomSecret": "",
+  "WecomAid": ""
+}
+
+### 发送消息
+GET http://localhost:8080/v1/message/1000003/test

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/beego/beego/v2/client/cache"
-	"github.com/beego/beego/v2/core/config"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/go-resty/resty/v2"
 	"os"
@@ -14,15 +13,6 @@ import (
 	"time"
 	"wecomchan/models"
 )
-
-//企业ID
-var corpId string
-
-//应用的凭证密钥
-var corpSecret string
-
-//应用ID
-var wecomAid string
 
 // GetAccessTokenUrl 获取 access_token 链接
 var GetAccessTokenUrl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s"
@@ -37,26 +27,6 @@ var bm cache.Cache
 var mutex sync.Mutex
 
 func init() {
-	//错误对象
-	var err error
-	corpId, err = config.String("corp_id")
-	if err != nil {
-		logs.Error("获取corpId出错了", err.Error())
-	}
-	corpId = GetEnvDefault("CORP_ID", corpId)
-	logs.Info("corpId", corpId)
-	corpSecret, err = config.String("wecom_secret")
-	if err != nil {
-		logs.Error("获取corpSecret出错了", err.Error())
-	}
-	corpSecret = GetEnvDefault("WECOM_SECRET", corpSecret)
-	logs.Info("corpSecret", corpSecret)
-	wecomAid, err = config.String("wecom_aid")
-	if err != nil {
-		logs.Error("获取corpSecret出错了", err.Error())
-	}
-	wecomAid = GetEnvDefault("WECOM_AID", wecomAid)
-	logs.Info("wecomAid", wecomAid)
 	bm, _ = cache.NewCache("memory", `{"interval":60}`)
 	logs.Info(bm)
 }
@@ -71,23 +41,29 @@ func GetEnvDefault(key, defVal string) string {
 }
 
 // GetAccessToken 获取AccessToken
-func GetAccessToken() string {
+func GetAccessToken(aid string) (string, error) {
 	mutex.Lock()
 	defer mutex.Unlock()
-	key, err := bm.Get(context.TODO(), AccessTokenKey)
+	key, err := bm.Get(context.TODO(), aid)
 	if err == nil {
 		logs.Info("从缓存中获取Key")
-		return StrVal(key)
+		return StrVal(key), err
 	} else {
 		logs.Error(err)
 	}
+	//查询配置信息
+	weComInfo, err := models.GetWeComInfoByAid(aid)
+	if err != nil {
+		logs.Error("aid 账号不存在", err)
+		return "", err
+	}
 	client := resty.New()
-	url := fmt.Sprintf(GetAccessTokenUrl, corpId, corpSecret)
+	url := fmt.Sprintf(GetAccessTokenUrl, weComInfo.CorpId, weComInfo.WecomSecret)
 	responseBody, err := client.R().Get(url)
 	if err != nil {
 		logs.Error("获取AccessToken出错了", err)
 		time.Sleep(60 * time.Second)
-		return GetAccessToken()
+		return GetAccessToken(aid)
 	}
 	var msgResult models.MsgResult
 	json.Unmarshal(responseBody.Body(), &msgResult)
@@ -95,7 +71,7 @@ func GetAccessToken() string {
 		logs.Info("把key 放入缓存中..")
 		bm.Put(context.TODO(), AccessTokenKey, msgResult.AccessToken, 7200*time.Second)
 	}
-	return msgResult.AccessToken
+	return msgResult.AccessToken, err
 }
 
 // StrVal 获取变量的字符串值
@@ -156,11 +132,11 @@ func StrVal(value interface{}) string {
 	return key
 }
 
-func SendNewsMessage(articles *[]models.WecomArticle) (models.MsgResult, error) {
+func SendNewsMessage(aid string, articles *[]models.WecomArticle) (models.MsgResult, error) {
 	newsMsg := models.NewsMsg{
 		Msg: models.Msg{
 			ToUser:  "@all",
-			AgentId: wecomAid,
+			AgentId: aid,
 			MsgType: "news",
 		},
 		News: models.News{
@@ -168,15 +144,15 @@ func SendNewsMessage(articles *[]models.WecomArticle) (models.MsgResult, error) 
 		},
 	}
 	str, _ := json.Marshal(newsMsg)
-	return PostMessage(string(str))
+	return PostMessage(aid, string(str))
 }
 
 // SendTextMessage 发送纯文本消息
-func SendTextMessage(message string) (models.MsgResult, error) {
+func SendTextMessage(aid, message string) (models.MsgResult, error) {
 	textMsg := models.TextMsg{
 		Msg: models.Msg{
 			ToUser:  "@all",
-			AgentId: wecomAid,
+			AgentId: aid,
 			MsgType: "text",
 		},
 		Text: models.Text{
@@ -184,28 +160,32 @@ func SendTextMessage(message string) (models.MsgResult, error) {
 		},
 	}
 	str, _ := json.Marshal(textMsg)
-	return PostMessage(string(str))
+	return PostMessage(aid, string(str))
 }
 
 // SendTextCardMessage 发送文本卡片消息
-func SendTextCardMessage(textCard *models.TextCard) (models.MsgResult, error) {
+func SendTextCardMessage(aid string, textCard *models.TextCard) (models.MsgResult, error) {
 	textCardMsg := models.TextCardMsg{
 		Msg: models.Msg{
 			ToUser:  "@all",
-			AgentId: wecomAid,
+			AgentId: aid,
 			MsgType: "textcard",
 		},
 		TextCard: textCard,
 	}
 	str, _ := json.Marshal(textCardMsg)
-	return PostMessage(string(str))
+	return PostMessage(aid, string(str))
 }
 
 // PostMessage 推送消息
-func PostMessage(body string) (models.MsgResult, error) {
+func PostMessage(aid, body string) (models.MsgResult, error) {
 	var msgResult = models.MsgResult{}
 	client := resty.New()
-	url := fmt.Sprintf(sendMsgUrl, GetAccessToken())
+	accessToken, err := GetAccessToken(aid)
+	if err != nil {
+		return msgResult, err
+	}
+	url := fmt.Sprintf(sendMsgUrl, accessToken)
 	responseBody, err := client.R().
 		SetBody(body).
 		Post(url)

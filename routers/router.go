@@ -10,7 +10,7 @@ package routers
 import (
 	"wecomchan/controllers"
 
-	"github.com/astaxie/beego"
+	beego "github.com/beego/beego/v2/server/web"
 )
 
 func init() {
@@ -18,6 +18,11 @@ func init() {
 		beego.NSNamespace("/message",
 			beego.NSInclude(
 				&controllers.MessageController{},
+			),
+		),
+		beego.NSNamespace("/config",
+			beego.NSInclude(
+				&controllers.WeComInfoController{},
 			),
 		),
 	)

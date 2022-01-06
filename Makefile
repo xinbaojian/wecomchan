@@ -5,11 +5,10 @@ run: clean
 	bee run -gendoc=true -downdoc=true
 
 build: clean
-	docker build -t xiuyuan/wecomchan:gov1 .
-
-save:
-	docker save -o wecomchan.tar xiuyuan/wecomchan:gov1
-	tar cvjpf wecomchan.tar.bz2 wecomchan.tar
+	docker build -t registry.cn-hangzhou.aliyuncs.com/xinbj/wecomchan:gov1.1 .
+	docker push registry.cn-hangzhou.aliyuncs.com/xinbj/wecomchan:gov1.1
+	docker rmi registry.cn-hangzhou.aliyuncs.com/xinbj/wecomchan:gov1.1
+	docker image prune -f
 
 start:
 	docker-compose --compatibility up -d
