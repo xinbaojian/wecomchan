@@ -6,6 +6,9 @@ run: clean
 
 build: clean
 	docker build -t registry.cn-hangzhou.aliyuncs.com/xinbj/wecomchan:gov1.1 .
+
+.ONESHELL:
+push: build
 	docker push registry.cn-hangzhou.aliyuncs.com/xinbj/wecomchan:gov1.1
 	docker rmi registry.cn-hangzhou.aliyuncs.com/xinbj/wecomchan:gov1.1
 	docker image prune -f
