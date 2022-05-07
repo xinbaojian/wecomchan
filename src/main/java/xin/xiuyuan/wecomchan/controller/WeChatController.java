@@ -80,8 +80,6 @@ public class WeChatController {
     @PostMapping("/verify")
     public HttpEntity<?> message(String msg_signature, String timestamp, String nonce, HttpServletRequest request) throws IOException, AesException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
-        String requestVal = "msg_signature:" + msg_signature + "; timestamp:" + timestamp + ";nonce " + nonce;
-        System.out.println(requestVal);
         String lines;
         StringBuilder bodyXml = new StringBuilder();
         while ((lines = reader.readLine()) != null) {
