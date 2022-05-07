@@ -67,7 +67,15 @@ public class MsgServiceImpl implements IMsgService {
 
     @Override
     public MsgResult sendText(String content) {
+        return sendText(null, content);
+    }
+
+    @Override
+    public MsgResult sendText(String toUser, String content) {
         TextMsg textMsg = new TextMsg();
+        if (StrUtil.isNotBlank(toUser)) {
+            textMsg.setTouser(toUser);
+        }
         textMsg.setAgentid(wecomAid);
         textMsg.setText(new Text().setContent(content));
         String body = JSONUtil.toJsonStr(textMsg);
@@ -76,7 +84,15 @@ public class MsgServiceImpl implements IMsgService {
 
     @Override
     public MsgResult sendTextCard(TextCard textCard) {
+        return sendTextCard(null, textCard);
+    }
+
+    @Override
+    public MsgResult sendTextCard(String toUser, TextCard textCard) {
         TextCartMsg textCartMsg = new TextCartMsg();
+        if (StrUtil.isNotBlank(toUser)) {
+            textCartMsg.setTouser(toUser);
+        }
         textCartMsg.setAgentid(wecomAid);
         if (StrUtil.isBlank(textCard.getBtntxt())) {
             textCard.setBtntxt("详情");
@@ -86,10 +102,17 @@ public class MsgServiceImpl implements IMsgService {
         return post(body);
     }
 
-
     @Override
     public MsgResult sendMarkdown(String content) {
+        return sendMarkdown(null, content);
+    }
+
+    @Override
+    public MsgResult sendMarkdown(String toUser, String content) {
         MarkdownMsg markdownMsg = new MarkdownMsg();
+        if (StrUtil.isNotBlank(toUser)) {
+            markdownMsg.setTouser(toUser);
+        }
         markdownMsg.setAgentid(wecomAid);
         Markdown markdown = new Markdown();
         markdown.setContent(content);
@@ -99,14 +122,22 @@ public class MsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public MsgResult sendNews(List<Article> articles) {
+    public MsgResult sendNews(String toUser, List<Article> articles) {
         NewsMsg newsMsg = new NewsMsg();
+        if (StrUtil.isNotBlank(toUser)) {
+            newsMsg.setTouser(toUser);
+        }
         newsMsg.setAgentid(wecomAid);
         News news = new News();
         newsMsg.setNews(news);
         news.setArticles(articles);
         String body = JSONUtil.toJsonStr(newsMsg);
         return post(body);
+    }
+
+    @Override
+    public MsgResult sendNews(List<Article> articles) {
+        return sendNews(null, articles);
     }
 
     private MsgResult post(String body) {

@@ -13,3 +13,5 @@ wecom:
   corpid: ${CORP_ID:CORP_ID}
   corpsecret: ${WECOM_SECRET:WECOM_SECRET}
   aid: ${WECOM_AID:WECOM_AID}
+  token: ${WECOM_TOKEN:WECOM_TOKEN}
+  encodingAesKey: ${WECOM_ENCODING_AES_KEY:WECOM_ENCODING_AES_KEY}

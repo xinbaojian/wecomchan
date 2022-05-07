@@ -27,12 +27,30 @@ public interface IMsgService {
     MsgResult sendText(String content);
 
     /**
+     * 发送文本消息给某人
+     *
+     * @param toUser  用户ID
+     * @param content 消息内容
+     * @return发送结果
+     */
+    MsgResult sendText(String toUser, String content);
+
+    /**
      * 发送卡片消息
      *
      * @param textCard 文本卡片消息
      * @return 发送结果
      */
     MsgResult sendTextCard(TextCard textCard);
+
+    /**
+     * 发送卡片消息
+     *
+     * @param toUser   用户ID
+     * @param textCard 文本卡片消息
+     * @return 发送结果
+     */
+    MsgResult sendTextCard(String toUser, TextCard textCard);
 
     /**
      * 发送markdown 消息
@@ -43,10 +61,28 @@ public interface IMsgService {
     MsgResult sendMarkdown(String markdown);
 
     /**
+     * 发送markdown 消息
+     *
+     * @param toUser   用户ID
+     * @param markdown markdown 内容
+     * @return 发送结果
+     */
+    MsgResult sendMarkdown(String toUser, String markdown);
+
+    /**
      * 发送图文消息
      *
      * @param articles 图文列表
      * @return 发送结果
      */
     MsgResult sendNews(List<Article> articles);
+
+    /**
+     * 发送图文消息
+     *
+     * @param toUser   用户ID
+     * @param articles 图文列表
+     * @return 发送结果
+     */
+    MsgResult sendNews(String toUser, List<Article> articles);
 }
